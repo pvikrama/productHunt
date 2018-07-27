@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% for product in products.all %}
+<div class = "container">
+<!-- Padding Top(pt) -->
+<div class = "row pt-3 ">
+	<!-- If you click on the details page it will take you to /product/details/product_id-->
+	<!-- cursor : pointer is some css code that makes the cursor into a hand to shows its clickable-->
+	<div class="col-2" onclick="window.location='{% url 'detail' product.id %}';" style="cursor: pointer;"><img src="{{ product.image.url }}" class="img-fluid"/></div>
+	<div class="col-6"><h1>{{ product.title }}</h1> <br/> <p>{{ product.summary }}</p></div>
+	<div class="col-4">	<a href="javascript:{document.getElementById('upvote{{ product.id }}').submit()}"><button class="btn btn-primary btn-lg btn-block"> <span class="oi oi-thumb-up"></span> Up Vote {{ product.votes_total }}</button></a></div>
+</div>
+</div>
+
+<form id="upvote{{ product.id }}" method="POST" action="{% url 'upvote' product.id %}">
+{% csrf_token %}
+<input type="hidden">
+</form>
+
+{%endfor %}
+{% endblock %}
+
+
